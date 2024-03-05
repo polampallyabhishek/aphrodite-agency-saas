@@ -28,6 +28,7 @@ import { useModal } from "@/providers/modal-provider";
 import CustomModal from "../global/custom-modal";
 import { Separator } from "../ui/separator";
 import { icons } from "@/lib/constants";
+import SubAccountDetails from "../forms/subaccount-details";
 
 type Props = {
   defaultOpen?: boolean;
@@ -48,8 +49,9 @@ const MenuOptions = ({
   user,
   defaultOpen,
 }: Props) => {
-  const { setOpen } = useModal();
   const [isMounted, setIsMounted] = useState(false);
+
+  const { setOpen } = useModal();
 
   const openState = useMemo(
     () => (defaultOpen ? { open: true } : {}),
@@ -101,9 +103,9 @@ const MenuOptions = ({
               >
                 <div className="flex items-center text-left gap-2">
                   <Compass />
-                  <div className="flex flex-col">
+                  <div className="flex flex-col max-w-[150px]">
                     {details.name}
-                    <span className="text-muted-foreground">
+                    <span className="text-muted-foreground truncate">
                       {details.address}
                     </span>
                   </div>
@@ -224,7 +226,23 @@ const MenuOptions = ({
                 {(user?.role === "AGENCY_OWNER" ||
                   user?.role === "AGENCY_ADMIN") && (
                   <SheetClose>
-                    <Button className="w-full flex gap-2" onClick={() => {}}>
+                    <Button
+                      className="w-full flex gap-2"
+                      onClick={() => {
+                        setOpen(
+                          <CustomModal
+                            title="Create a SubAccount"
+                            subheading="You can switch between agency account and subaccount from the sidebar"
+                          >
+                            <SubAccountDetails
+                              agencyDetails={user?.Agency}
+                              userId={user?.id}
+                              userName={user?.name}
+                            />
+                          </CustomModal>
+                        );
+                      }}
+                    >
                       <PlusCircleIcon size={15} />
                       Create Sub Account
                     </Button>

@@ -50,7 +50,7 @@ const sheetVariants = cva(
 );
 
 interface CustomSheetContentProps {
-  showX: boolean;
+  showX?: boolean;
 }
 
 interface SheetContentProps

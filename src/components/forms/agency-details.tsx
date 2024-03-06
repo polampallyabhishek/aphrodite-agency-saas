@@ -392,7 +392,10 @@ const AgencyDetails = ({ data }: Props) => {
                   ></NumberInput>
                 </div>
               )}
-              <Button type="submit" disabled={isLoading}>
+              <Button
+                type="submit"
+                disabled={isLoading || !form.formState.isDirty}
+              >
                 {isLoading ? <Loading /> : "Save Agency Information"}
               </Button>
             </form>
@@ -423,8 +426,8 @@ const AgencyDetails = ({ data }: Props) => {
                 Agency account and all related sub accounts.
               </AlertDialogDescription>
             </AlertDialogHeader>
-            <AlertDialogFooter className="flex items-center">
-              <AlertDialogCancel className="mb-2">Cancel</AlertDialogCancel>
+            <AlertDialogFooter className="flex items-center gap-1">
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction
                 disabled={deletingAgency}
                 className="bg-destructive hover:bg-destructive"

@@ -5,6 +5,7 @@ import { db } from "./db";
 import { redirect } from "next/navigation";
 import { Agency, Plan, Role, SubAccount, User } from "@prisma/client";
 import { v4 } from "uuid";
+import { CreateMediaType } from "./types";
 
 export const getAuthUserDetails = async () => {
   const user = await currentUser();
@@ -72,18 +73,17 @@ export const saveActivityLogsNotification = async ({
   }
 
   let foundAgencyId = agencyId;
-  if (foundAgencyId) {
-    if (!subAccountId) {
-      throw new Error(
-        "You need to provide atleast an AgencyId or SubAccount Id"
-      );
-    }
+  if (subAccountId) {
     const response = await db.subAccount.findUnique({
       where: {
         id: subAccountId,
       },
     });
     if (response) foundAgencyId = response.agencyId;
+  }
+
+  if (!agencyId && !subAccountId) {
+    throw new Error("You need to provide atleast an AgencyId or SubAccount Id");
   }
 
   if (subAccountId) {
@@ -191,12 +191,13 @@ export const updateAgencyGoal = async (
 ) => {
   const response = await db.agency.update({
     data: {
-      ...agencyDetails,
+      goal: Number(agencyDetails.goal),
     },
     where: {
       id: agencyId,
     },
   });
+  return response;
 };
 
 export const deleteAgency = async (agencyId: string) => {
@@ -498,4 +499,39 @@ export const sendInvitation = async (
   }
 
   return resposne;
+};
+
+export const getMedia = async (subaccountId: string) => {
+  const mediafiles = await db.subAccount.findUnique({
+    where: {
+      id: subaccountId,
+    },
+    include: { Media: true },
+  });
+
+  return mediafiles;
+};
+
+export const createMedia = async (
+  subaccountId: string,
+  mediaFile: CreateMediaType
+) => {
+  const response = await db.media.create({
+    data: {
+      link: mediaFile.link,
+      name: mediaFile.name,
+      subAccountId: subaccountId,
+    },
+  });
+
+  return response;
+};
+
+export const deleteMedia = async (mediaId: string) => {
+  const response = await db.media.delete({
+    where: {
+      id: mediaId,
+    },
+  });
+  return response;
 };

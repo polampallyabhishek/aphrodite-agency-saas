@@ -119,6 +119,17 @@ const AgencyDetails = ({ data }: Props) => {
             state: values.zipCode,
           },
         };
+
+        const customerResponse = await fetch("/api/stripe/create-customer", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bodyData),
+        });
+        const customerData: { customerId: string } =
+          await customerResponse.json();
+        customerId = customerData.customerId;
       }
       newUserData = await initUser({
         role: "AGENCY_OWNER",
@@ -126,7 +137,7 @@ const AgencyDetails = ({ data }: Props) => {
       if (!data?.customerId) {
         const response = await upsertAgency({
           id: data?.id ? data.id : v4(),
-          customerId: data?.customerId || "",
+          customerId: data?.customerId || customerId || "",
           address: values.address,
           agencyLogo: values.agencyLogo,
           city: values.city,

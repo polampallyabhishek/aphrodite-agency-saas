@@ -47,7 +47,7 @@ const InfoBar = ({ notifications, subAccountId, className, role }: Props) => {
     <>
       <div
         className={twMerge(
-          "fixed z-[20] md:left-[300px] left-0 right-0 top-0 p-4 bg-background/80 backdrop-blur-md flex  gap-4 items-center border-b-[1px] ",
+          "fixed z-[20] md:left-[300px] left-0 right-0 top-0 p-4 bg-background/80 backdrop-blur-md flex gap-4 items-center border-b-[1px] ",
           className
         )}
       >
@@ -99,7 +99,7 @@ const InfoBar = ({ notifications, subAccountId, className, role }: Props) => {
                         </span>
                       </p>
                       <small className="text-xs text-muted-foreground">
-                        {new Date(notification.createdAt).toLocaleDateString()}
+                        {new Date(notification.createdAt).toLocaleString()}
                       </small>
                     </div>
                   </div>

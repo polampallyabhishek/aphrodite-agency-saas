@@ -9,7 +9,7 @@ import ModalProvider from "@/providers/modal-provider";
 const font = DM_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Aphrodite",
+  title: "Imperium",
   description: "The all in one Agency Solution.",
 };
 

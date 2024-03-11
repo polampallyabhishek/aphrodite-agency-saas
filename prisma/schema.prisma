@@ -263,6 +263,7 @@ model Contact {
   id           String   @id @default(uuid())
   name         String
   email        String
+  phone        String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   subAccountId String
@@ -396,8 +397,8 @@ model Notification {
 }
 
 enum Plan {
-  price_1OYxkqFj9oKEERu1NbKUxXxN
-  price_1OYxkqFj9oKEERu1KfJGWxgN
+  price_1OsPGtETc6nmEwlz080vxhVS
+  price_1OsPGtETc6nmEwlzPvORA3Fh
 }
 
 model Subscription {
@@ -411,7 +412,7 @@ model Subscription {
   priceId              String
   customerId           String
   currentPeriodEndDate DateTime
-  subscritiptionId     String   @unique
+  subscriptionId     String   @unique
 
   agencyId String? @unique
   Agency   Agency? @relation(fields: [agencyId], references: [id])

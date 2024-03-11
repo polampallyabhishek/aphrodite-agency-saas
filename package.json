@@ -1,5 +1,5 @@
 {
-  "name": "aphrodite",
+  "name": "imperium",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -40,6 +40,8 @@
     "@radix-ui/react-toggle": "^1.0.3",
     "@radix-ui/react-toggle-group": "^1.0.4",
     "@radix-ui/react-tooltip": "^1.0.7",
+    "@stripe/react-stripe-js": "^2.5.1",
+    "@stripe/stripe-js": "^3.0.7",
     "@tanstack/react-table": "^8.13.2",
     "@tremor/react": "^3.14.1",
     "@types/uuid": "^9.0.8",
@@ -50,15 +52,16 @@
     "date-fns": "^3.3.1",
     "embla-carousel-react": "^8.0.0",
     "lucide-react": "^0.341.0",
-    "next": "14.1.0",
+    "next": "latest",
     "next-themes": "^0.2.1",
     "prisma": "^5.10.2",
     "react": "^18",
-    "react-day-picker": "^8.10.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18",
     "react-hook-form": "^7.50.1",
     "react-resizable-panels": "^2.0.11",
     "sonner": "^1.4.2",
+    "stripe": "^14.20.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "uploadthing": "^6.4.1",
@@ -67,14 +70,15 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
+    "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.0",
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
-    "eslint": "^8",
-    "eslint-config-next": "14.1.0"
+    "typescript": "^5"
   }
 }

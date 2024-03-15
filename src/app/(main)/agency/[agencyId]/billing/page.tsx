@@ -14,19 +14,20 @@ import {
 } from "@/components/ui/table";
 import clsx from "clsx";
 import SubscriptionHelper from "./_components/subscription-helper";
+import { upsertAgency } from "@/lib/queries";
 
 type Props = {
   params: { agencyId: string };
 };
 
-const page = async ({ params }: Props) => {
-  //CHALLENGE : Create the add on  products
+const BillingPage = async ({ params }: Props) => {
+  //CHALLENGE : Create the add on products
   const addOns = await stripe.products.list({
     ids: addOnProducts.map((product) => product.id),
     expand: ["data.default_price"],
   });
 
-  const agencySubscription = await db.agency.findUnique({
+  let agencySubscription = await db.agency.findUnique({
     where: {
       id: params.agencyId,
     },
@@ -35,6 +36,59 @@ const page = async ({ params }: Props) => {
       Subscription: true,
     },
   });
+
+  if (!agencySubscription?.customerId) {
+    const values = await db.agency.findUnique({
+      where: {
+        id: params.agencyId,
+      },
+    });
+    if (!values) return;
+
+    const bodyData = {
+      email: values.companyEmail,
+      name: values.name,
+      shipping: {
+        address: {
+          city: values.city,
+          country: values.country,
+          line1: values.address,
+          postal_code: values.zipCode,
+          state: values.zipCode,
+        },
+        name: values.name,
+      },
+      address: {
+        city: values.city,
+        country: values.country,
+        line1: values.address,
+        postal_code: values.zipCode,
+        state: values.zipCode,
+      },
+    };
+
+    const customerResponse = await fetch(
+      process.env.NEXT_PUBLIC_URL + "/api/stripe/create-customer",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bodyData),
+      }
+    );
+    const customerData: { customerId: string } = await customerResponse.json();
+    const customerId = customerData.customerId;
+    const response = await upsertAgency({
+      ...values,
+      customerId,
+    });
+    if (response && agencySubscription) {
+      agencySubscription.customerId = response.customerId;
+    } else {
+      return null;
+    }
+  }
 
   const prices = await stripe.prices.list({
     product: process.env.NEXT_PLURA_PRODUCT_ID,
@@ -173,4 +227,4 @@ const page = async ({ params }: Props) => {
   );
 };
 
-export default page;
+export default BillingPage;

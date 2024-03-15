@@ -33,11 +33,13 @@ const SubscriptionFormWrapper = ({ customerId, planExists }: Props) => {
     () => ({
       clientSecret: subscription?.clientSecret,
       appearance: {
-        theme: "flat",
+        theme: "night",
       },
     }),
     [subscription]
   );
+
+  console.log(customerId);
 
   useEffect(() => {
     if (!selectedPriceId) return;
